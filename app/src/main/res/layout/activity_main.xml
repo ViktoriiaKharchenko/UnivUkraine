@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:weightSum="100"
+        tools:layout_editor_absoluteX="206dp"
+        tools:layout_editor_absoluteY="172dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="60"
+            android:background="@drawable/gerb"
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
+            android:weightSum="100" />
+
+        <Button
+            android:id="@+id/UnivButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="Університети України"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/setMatrixButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="Університети з показником Excellence"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
