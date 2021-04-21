@@ -42,7 +42,7 @@ public class UnivTableActivity extends AppCompatActivity {
             tableRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent myIntent = new Intent(UnivTableActivity.this, MapsActivity2.class);
+                    Intent myIntent = new Intent(UnivTableActivity.this, MapsActivity.class);
                     myIntent.putExtra("university", university); //Optional parameters
                     startActivity(myIntent);
                 }
