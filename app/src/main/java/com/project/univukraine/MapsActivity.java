@@ -46,62 +46,59 @@ import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-//    private GoogleMap mMap;
-//    private University university=null;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_maps);
-//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-//        Intent intent = getIntent();
-//        university = (University)intent.getSerializableExtra("university");
-//        setContentView(R.layout.activity_maps);
-//
-//        // Construct a PlacesClient
-//    }
-//
-//    /**
-//     * Manipulates the map once available.
-//     * This callback is triggered when the map is ready to be used.
-//     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-//     * we just add a marker near Sydney, Australia.
-//     * If Google Play services is not installed on the device, the user will be prompted to install
-//     * it inside the SupportMapFragment. This method will only be triggered once the user has
-//     * installed Google Play services and returned to the app.
-//     */
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        LatLng sydney;
-//        if(university!=null){
-//            sydney = new LatLng(Double.parseDouble(university.getLatitude()), Double.parseDouble(university.getLongitude()));
-//        }else {
-//            // Add a marker in Sydney and move the camera
-//           sydney = new LatLng(-34, 151);
-//        }
-//        mMap.addMarker(new MarkerOptions().position(sydney).title(university.getName()));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//    }
+    private GoogleMap mMap;
+    private University university=null;
 
-    SupportMapFragment mapFragment;
-    GoogleMap mMap;
-    LatLng origin = new LatLng(30.739834, 76.782702);
-    LatLng dest = new LatLng(30.705493, 76.801256);
-    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        setContentView(R.layout.activity_maps);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        drawPolylines();
-
+        Intent intent = getIntent();
+        university = (University)intent.getSerializableExtra("university");
     }
+
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        LatLng sydney;
+        if(university!=null){
+            sydney = new LatLng(Double.parseDouble(university.getLatitude()), Double.parseDouble(university.getLongitude()));
+        }else {
+            // Add a marker in Sydney and move the camera
+            sydney = new LatLng(-34, 151);
+        }
+        mMap.addMarker(new MarkerOptions().position(sydney).title(university.getName()));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    SupportMapFragment mapFragment;
+    //GoogleMap mMap;
+    LatLng origin = new LatLng(30.739834, 76.782702);
+    LatLng dest = new LatLng(30.705493, 76.801256);
+    ProgressDialog progressDialog;
+  //  @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
+//        drawPolylines();
+//
+//    }
 
     private void drawPolylines() {
         progressDialog = new ProgressDialog(MapsActivity.this);
@@ -139,21 +136,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.addMarker(new MarkerOptions()
-                .position(origin)
-                .title("LinkedIn")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(dest));
-
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 15));
-
-    }
+//    @Override
+//    public void onMapReady(GoogleMap googleMap) {
+//        mMap = googleMap;
+//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(origin)
+//                .title("LinkedIn")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+//
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(dest));
+//
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 15));
+//
+//    }
 
 
     private class DownloadTask extends AsyncTask<String, Void, String> {

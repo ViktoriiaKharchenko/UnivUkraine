@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -32,6 +34,35 @@ public class ContactActivity extends AppCompatActivity {
         List<Contacts> contacts = contactRepository.getAllContacts();
         tableLayout = findViewById(R.id.tableLayout);
         makeTable(contacts);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // получим идентификатор выбранного пункта меню
+        int id = item.getItemId();
+        Intent intent ;
+        // Операции для выбранного пункта меню
+        switch (id) {
+            case R.id.action_univ:
+                intent = new Intent(ContactActivity.this, UnivTableActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_main:
+                intent = new Intent(ContactActivity.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_contact:
+                intent = new Intent(ContactActivity.this, ContactActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
     public void contactFilter(View view){
         List<Contacts> contacts = contactRepository.getContactFilter();
