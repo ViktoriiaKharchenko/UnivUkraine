@@ -18,23 +18,20 @@ import com.project.univukraine.model.UniversityRepository;
 
 import java.util.List;
 
-public class UnivTableActivity extends AppCompatActivity {
-    TextView textViewWebometrix;
+public class UnivTableExcellenceActivity extends AppCompatActivity {
     SQLiteDatabase db;
     UniversityRepository universityRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_univ_table);
+        setContentView(R.layout.activity_univ_table_excellence);
         db = getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null);
         universityRepository =  new UniversityRepository(getBaseContext(),
                 getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null));
-        List<University> universities = universityRepository.getAllUniversities();
+        List<University> universities = universityRepository.getUniversitiesWithExcellence();
         TableLayout tableLayout = findViewById(R.id.tableLayout);
-        textViewWebometrix = findViewById(R.id.webometrix);
-        Integer min = universityRepository.getWebometrixMinRank();
-        Integer max = universityRepository.getWebometrixMaxRank();
-        textViewWebometrix.setText("Мінімальний показник Webometrix - " + min.toString() + ", максимальний - " + max.toString());
+
+
         for(int i=0;i<universities.size();i++){
             Log.d("Rows",universities.get(i).toString());
             University university = universities.get(i);
@@ -45,7 +42,7 @@ public class UnivTableActivity extends AppCompatActivity {
             tableRow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent myIntent = new Intent(UnivTableActivity.this, MapsActivity.class);
+                    Intent myIntent = new Intent(UnivTableExcellenceActivity.this, MapsActivity.class);
                     myIntent.putExtra("university", university); //Optional parameters
                     startActivity(myIntent);
                 }
@@ -53,13 +50,15 @@ public class UnivTableActivity extends AppCompatActivity {
 
             createDefaultTextView(tableRow, university.getName()+"\n"+university.getAddress(), Color.parseColor("#000000"), Color.parseColor("#ffffff"),50);
             createDefaultTextView(tableRow, university.getStudentAmount()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),25);
-            createDefaultTextView(tableRow, university.getWebometrix()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),25);
+            createDefaultTextView(tableRow, university.getExcellence()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),25);
 
             tableLayout.addView(tableRow);
-          }
+        }
+
+
     }
     public void rowClick(View view){
-        Intent intent = new Intent(UnivTableActivity.this, MainActivity.class);
+        Intent intent = new Intent(UnivTableExcellenceActivity.this, MainActivity.class);
         startActivity(intent);
 
     }

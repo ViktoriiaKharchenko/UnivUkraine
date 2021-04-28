@@ -1,40 +1,41 @@
 package com.project.univukraine;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
+
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
-import com.project.univukraine.model.University;
+import com.project.univukraine.model.ContactRepository;
 import com.project.univukraine.model.UniversityRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     SQLiteDatabase db;
     UniversityRepository universityRepository;
+    ContactRepository contactRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null);
         //onStartPref();
+        //onStartPref2();
         universityRepository =  new UniversityRepository(getBaseContext(),
                 getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null));
+        contactRepository = new ContactRepository(getBaseContext(),
+                getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null));
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // получим идентификатор выбранного пункта меню
@@ -48,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_main:
                 intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_contact:
+                intent = new Intent(MainActivity.this, ContactActivity.class);
                 startActivity(intent);
                 return true;
             default:
@@ -68,69 +73,29 @@ public class MainActivity extends AppCompatActivity {
         db.execSQL("INSERT INTO university VALUES (6, 'Національний університет біоресурсів і природокористування України', 'Київ', 26000, 2614, 3281, '50.38344273447251', '30.495999238617475');");
         db.close();
     }
+    private void onStartPref2 (){
+        db.execSQL("DROP TABLE IF EXISTS contacts");
+        db.execSQL("DROP TABLE IF EXISTS contacts");
 
+        db.execSQL("CREATE TABLE IF NOT EXISTS contacts (id INTEGER, name TEXT, surname TEXT, phoneNum TEXT, email TEXT)");
+        db.execSQL("INSERT INTO contacts VALUES (0, 'Іван', 'Іванов', '0678339912', 'ivanov@gmail.com');");
+        db.execSQL("INSERT INTO contacts VALUES (1, 'Лілія', 'Іванова', '0678562912', 'ivanovaL@gmail.com');");
+        db.execSQL("INSERT INTO contacts VALUES (2, 'Катерина', 'Оліщук', '0671452376', 'Kolischuk@ukr.net');");
+        db.execSQL("INSERT INTO contacts VALUES (3, 'Олександр', 'Терещенко', '0961010989', 'tereshSasha@gmail.com');");
+        db.execSQL("INSERT INTO contacts VALUES (4, 'Кирил', 'Корніленко', '0632880090', 'kornilenko@ukr.net');");
+        db.execSQL("INSERT INTO contacts VALUES (5, 'Анастасія', 'Токар', '0950302121', 'TokNastia@gmail.com');");
+        db.execSQL("INSERT INTO contacts VALUES (6, 'Ірина', 'Тітаренко', '0932011987', 'TitarenkoI@gmail.com');");
+        db.close();
+    }
     public void onClick(View view){
         Intent intent = new Intent(MainActivity.this, UnivTableActivity.class);
         startActivity(intent);
-//        List<University> universities = universityRepository.getAllUniversities();
-//        TableLayout tableLayout = (TableLayout)findViewById(R.id.tab);
-//        tableLayout.removeAllViews();
-//
-//        TableRow tableRow0 = new TableRow(getApplicationContext());
-//        tableRow0.setLayoutParams(new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-//        tableRow0.setBackgroundColor(Color.parseColor("#aaffff"));
-//        tableRow0.setWeightSum(100);
-//
-//        createDefaultTextView(tableRow0,"Id",Color.parseColor("#000000"), Color.parseColor("#ccffff"), 10);
-//        createDefaultTextView(tableRow0,"Name", Color.parseColor("#000000"), Color.parseColor("#aaffff"),40);
-//        createDefaultTextView(tableRow0,"Address", Color.parseColor("#000000"), Color.parseColor("#aaffff"), 10);
-//        createDefaultTextView(tableRow0,"Student amount", Color.parseColor("#000000"), Color.parseColor("#aaffff"),10);
-//        createDefaultTextView(tableRow0,"World Rank", Color.parseColor("#000000"), Color.parseColor("#aaffff"),10);
-//        createDefaultTextView(tableRow0,"Excellence", Color.parseColor("#000000"), Color.parseColor("#aaffff"),10);
-//        createDefaultTextView(tableRow0,"onMap", Color.parseColor("#000000"), Color.parseColor("#aaffff"),10);
-//        tableLayout.addView(tableRow0);
-//
-//        for(int i=0;i<universities.size();i++){
-//            Log.d("Rows",universities.get(i).toString());
-//            TableRow tableRow = new TableRow(getApplicationContext());
-//            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-//            //Handler handler = null;
-//            University university = universities.get(i);
-//
-//            createDefaultTextView(tableRow, university.getId()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),3);
-//            createDefaultTextView(tableRow, university.getName(), Color.parseColor("#000000"), Color.parseColor("#ffffff"),15);
-//            createDefaultTextView(tableRow, university.getAddress(), Color.parseColor("#000000"), Color.parseColor("#ffffff"),5);
-//            createDefaultTextView(tableRow, university.getStudentAmount()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),5);
-//            createDefaultTextView(tableRow, university.getWebometrix()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),5);
-//            createDefaultTextView(tableRow, university.getExcellence()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),5);
-//            Button button = new Button(getApplicationContext());
-//            button.setText(university.getId()+"");
-//            button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Button button1 = (Button)(v);
-//                    University university1 = universityRepository.getUniversityById(Integer.parseInt(button1.getText().toString()));
-//                    Intent myIntent = new Intent(MainActivity.this, MapsActivity2.class);
-//                    myIntent.putExtra("university", university); //Optional parameters
-//                    startActivity(myIntent);
-//                }
-//            });
-//            tableRow.addView(button);
-//
-//            tableLayout.addView(tableRow);
-      //  }
+
+    }
+    public void onClickExcellence(View view){
+        Intent intent = new Intent(MainActivity.this, UnivTableExcellenceActivity.class);
+        startActivity(intent);
+
     }
 
-//    private TextView createDefaultTextView(TableRow tableRow0, String value, int textColor, int bgColor, float weight) {
-//        TextView columsView = new TextView(getApplicationContext());
-//        columsView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, weight));
-//        columsView.setTextColor(textColor);
-//        columsView.setBackgroundColor(bgColor);
-//        columsView.setText(value);
-//        columsView.setTextSize(12);
-//        columsView.setMaxLines(12);
-//        columsView.setGravity(Gravity.LEFT);
-//        tableRow0.addView(columsView);
-//        return columsView;
-//    }
 }

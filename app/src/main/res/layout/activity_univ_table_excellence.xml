@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UnivTableActivity">
+    tools:context=".UnivTableExcellenceActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,15 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/webometrix"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="TextView"
-                android:textSize="20sp" />
 
             <TableLayout
                 android:id="@+id/tableLayout"
@@ -61,7 +52,7 @@
                         android:layout_weight="25"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="Рейтинг"
+                        android:text="Excellence"
                         android:textSize="18sp" />
 
                 </TableRow>

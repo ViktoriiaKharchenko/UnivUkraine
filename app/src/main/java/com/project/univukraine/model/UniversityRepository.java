@@ -125,4 +125,43 @@ public class UniversityRepository extends SQLiteOpenHelper {
         }
         return universityList;
     }
+
+    public List<University> getUniversitiesWithExcellence() throws SQLException {
+        //db.
+        //open();
+        Cursor mCursor = db.query(true, DATABASE_TABLE,
+                new String[]{KEY_ID, KEY_NAME, KEY_ADDRESS, KEY_STUDENT_AMOUNT, KEY_WEBOMETRIX, KEY_EXCELLENCE, KEY_LONGITUDE, KEY_LATITUDE},
+                KEY_EXCELLENCE + "< 5000"+" AND "+KEY_ADDRESS+"!= \"Київ\"" , null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        List<University> universityList = new ArrayList<>();
+        universityList.add(mapToUniversity(mCursor));
+        while (mCursor.moveToNext()) {
+            universityList.add(mapToUniversity(mCursor));
+        }
+        return universityList;
+    }
+    public Integer getWebometrixMinRank() throws SQLException {
+        //db.
+        //open();
+        String sqlQuery = "SELECT MIN(webometrix) AS MinRank FROM university";
+        Cursor mCursor = db.rawQuery(sqlQuery, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+
+        return mCursor.getInt( mCursor.getColumnIndex("MinRank"));
+    }
+    public Integer getWebometrixMaxRank() throws SQLException {
+        //db.
+        //open();
+        String sqlQuery = "SELECT MAX(webometrix) AS MaxRank FROM university";
+        Cursor mCursor = db.rawQuery(sqlQuery, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+
+        return mCursor.getInt( mCursor.getColumnIndex("MaxRank"));
+    }
 }

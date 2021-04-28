@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UnivTableActivity">
+    tools:context=".ContactActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,14 +17,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/webometrix"
+            <Button
+                android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="10sp"
-                android:text="TextView"
-                android:textSize="20sp" />
+                android:text='Контакти, у яких прізвище починається на "Т"'
+                android:onClick="contactFilter"/>
 
             <TableLayout
                 android:id="@+id/tableLayout"
@@ -34,8 +32,7 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="rowClick">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -43,7 +40,7 @@
                         android:layout_weight="50"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="Університет"
+                        android:text="Ім'я"
                         android:textSize="18sp" />
 
                     <TextView
@@ -52,7 +49,7 @@
                         android:layout_weight="25"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="К-сть\nстудентів"
+                        android:text="Номер телефону"
                         android:textSize="18sp" />
 
                     <TextView
@@ -61,7 +58,7 @@
                         android:layout_weight="25"
                         android:gravity="center"
                         android:padding="10dip"
-                        android:text="Рейтинг"
+                        android:text="Пошта"
                         android:textSize="18sp" />
 
                 </TableRow>
@@ -70,5 +67,4 @@
             </TableLayout>
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
