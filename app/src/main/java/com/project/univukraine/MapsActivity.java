@@ -48,57 +48,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private University university=null;
+    SupportMapFragment mapFragment;
+    LatLng origin = new LatLng(49.22567284740066, 28.425646982969074);
+    LatLng dest; //= new LatLng(30.705493, 76.801256);
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Intent intent = getIntent();
         university = (University)intent.getSerializableExtra("university");
-    }
+        dest  = new LatLng(Double.parseDouble(university.getLatitude()), Double.parseDouble(university.getLongitude()));
+        drawPolylines();
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        LatLng sydney;
-        if(university!=null){
-            sydney = new LatLng(Double.parseDouble(university.getLatitude()), Double.parseDouble(university.getLongitude()));
-        }else {
-            // Add a marker in Sydney and move the camera
-            sydney = new LatLng(-34, 151);
-        }
-        mMap.addMarker(new MarkerOptions().position(sydney).title(university.getName()));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
-
-    SupportMapFragment mapFragment;
-    //GoogleMap mMap;
-    LatLng origin = new LatLng(30.739834, 76.782702);
-    LatLng dest = new LatLng(30.705493, 76.801256);
-    ProgressDialog progressDialog;
-  //  @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-//        drawPolylines();
-//
-//    }
 
     private void drawPolylines() {
         progressDialog = new ProgressDialog(MapsActivity.this);
@@ -112,6 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("url", url + "");
         DownloadTask downloadTask = new DownloadTask();
         // Start downloading json data from Google Directions API
+
         downloadTask.execute(url);
     }
     @Override
@@ -136,22 +104,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        googleMap.addMarker(new MarkerOptions()
-//                .position(origin)
-//                .title("LinkedIn")
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-//
-//        googleMap.addMarker(new MarkerOptions()
-//                .position(dest));
-//
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 15));
-//
-//    }
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.addMarker(new MarkerOptions()
+                .position(origin)
+                .title("LinkedIn")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
+        googleMap.addMarker(new MarkerOptions()
+                .position(dest));
+
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 7));
+
+    }
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
 
@@ -162,6 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 data = downloadUrl(url[0]);
+                Log.d("DownloadTask","DownloadTask : " + data);
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
@@ -199,42 +167,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             return routes;
         }
-
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-
             progressDialog.dismiss();
-            Log.d("result", result.toString());
-            ArrayList points = null;
-            PolylineOptions lineOptions = null;
-
-            for (int i = 0; i < result.size(); i++) {
-                points = new ArrayList();
-                lineOptions = new PolylineOptions();
-
+            ArrayList<LatLng> points = new ArrayList<LatLng>();;
+            PolylineOptions lineOptions = new PolylineOptions();;
+            lineOptions.width(5);
+            lineOptions.color(Color.RED);
+            MarkerOptions markerOptions = new MarkerOptions();
+            // Traversing through all the routes
+            for(int i=0;i<result.size();i++){
+                // Fetching i-th route
                 List<HashMap<String, String>> path = result.get(i);
-
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
-
+                // Fetching all the points in i-th route
+                for(int j=0;j<path.size();j++){
+                    HashMap<String,String> point = path.get(j);
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
-
                     points.add(position);
                 }
-
+                // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
-                lineOptions.width(12);
-                lineOptions.color(Color.RED);
-                lineOptions.geodesic(true);
 
             }
-
-// Drawing polyline in the Google Map for the i-th route
-            mMap.addPolyline(lineOptions);
+            // Drawing polyline in the Google Map for the i-th route
+            if(points.size()!=0)mMap.addPolyline(lineOptions);//to avoid crash
         }
-    }
+
+ }
 
     private String getDirectionsUrl(LatLng origin, LatLng dest) {
 
@@ -254,7 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String output = "json";
 
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + getString(R.string.google_maps_key);
 
 
         return url;
