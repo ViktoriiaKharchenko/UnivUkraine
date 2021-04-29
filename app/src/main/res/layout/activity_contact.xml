@@ -37,29 +37,35 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="50"
+                        android:layout_weight="33"
+                        android:background="#9966FF"
                         android:gravity="center"
-                        android:padding="10dip"
+                        android:padding="7dip"
                         android:text="Ім'я"
-                        android:textSize="18sp" />
+                        android:textColor="#FBF4F4"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="25"
+                        android:layout_weight="33"
+                        android:background="#9966FF"
                         android:gravity="center"
-                        android:padding="10dip"
-                        android:text="Номер телефону"
-                        android:textSize="18sp" />
+                        android:padding="7dip"
+                        android:text="Номер\nтелефону"
+                        android:textColor="#FBF4F4"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="25"
+                        android:layout_weight="34"
+                        android:background="#9966FF"
                         android:gravity="center"
-                        android:padding="10dip"
+                        android:padding="7dip"
                         android:text="Пошта"
-                        android:textSize="18sp" />
+                        android:textColor="#FBF4F4"
+                        android:textSize="16sp" />
 
                 </TableRow>
 

@@ -32,6 +32,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="50"
+                        android:background="#9966FF"
+                        android:textColor="#FBF4F4"
                         android:gravity="center"
                         android:padding="10dip"
                         android:text="Університет"
@@ -41,6 +43,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="25"
+                        android:background="#9966FF"
+                        android:textColor="#FBF4F4"
                         android:gravity="center"
                         android:padding="10dip"
                         android:text="К-сть\nстудентів"
@@ -50,14 +54,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="25"
+                        android:background="#9966FF"
+                        android:textColor="#FBF4F4"
                         android:gravity="center"
                         android:padding="10dip"
                         android:text="Excellence"
                         android:textSize="18sp" />
 
                 </TableRow>
-
-
             </TableLayout>
         </LinearLayout>
     </ScrollView>

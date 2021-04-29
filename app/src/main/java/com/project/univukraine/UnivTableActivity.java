@@ -36,7 +36,7 @@ public class UnivTableActivity extends AppCompatActivity {
         textViewWebometrix = findViewById(R.id.webometrix);
         Integer min = universityRepository.getWebometrixMinRank();
         Integer max = universityRepository.getWebometrixMaxRank();
-        textViewWebometrix.setText("Мінімальний показник Webometrix - " + min.toString() + ", максимальний - " + max.toString());
+        textViewWebometrix.setText(" Min World (Webometrix*) Rank - " + min.toString() + "\n Max World (Webometrix*) Rank - " + max.toString());
         for(int i=0;i<universities.size();i++){
             Log.d("Rows",universities.get(i).toString());
             University university = universities.get(i);
@@ -52,11 +52,18 @@ public class UnivTableActivity extends AppCompatActivity {
                     startActivity(myIntent);
                 }
             });
-
-            createDefaultTextView(tableRow, university.getName()+"\n"+university.getAddress(), Color.parseColor("#000000"), Color.parseColor("#ffffff"),50);
-            createDefaultTextView(tableRow, university.getStudentAmount()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),25);
-            createDefaultTextView(tableRow, university.getWebometrix()+"", Color.parseColor("#000000"), Color.parseColor("#ffffff"),25);
-
+            if(i%2 == 0) {
+                tableRow.setBackgroundColor(Color.parseColor("#D3D3D3"));
+                createDefaultTextView(tableRow, university.getName() + "\n" + university.getAddress(), Color.parseColor("#000000"), Color.parseColor("#D3D3D3"), 50);
+                createDefaultTextView(tableRow, university.getStudentAmount() + "", Color.parseColor("#000000"), Color.parseColor("#D3D3D3"), 25);
+                createDefaultTextView(tableRow, university.getWebometrix() + "", Color.parseColor("#000000"), Color.parseColor("#D3D3D3"), 25);
+            }
+            else{
+                tableRow.setBackgroundColor(Color.parseColor("#F0F0F0"));
+                createDefaultTextView(tableRow, university.getName() + "\n" + university.getAddress(), Color.parseColor("#000000"), Color.parseColor("#F0F0F0"), 50);
+                createDefaultTextView(tableRow, university.getStudentAmount() + "", Color.parseColor("#000000"), Color.parseColor("#F0F0F0"), 25);
+                createDefaultTextView(tableRow, university.getWebometrix() + "", Color.parseColor("#000000"), Color.parseColor("#F0F0F0"), 25);
+            }
             tableLayout.addView(tableRow);
           }
     }
