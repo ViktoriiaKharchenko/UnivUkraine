@@ -1,4 +1,5 @@
 *.iml
+google_maps_api.xml
 /.gradle
 /.idea
 /local.properties
@@ -9,7 +10,7 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 .DS_Store
-/build
+*/build
 /captures
 .externalNativeBuild
 .cxx
