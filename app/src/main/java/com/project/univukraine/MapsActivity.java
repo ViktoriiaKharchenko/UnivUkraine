@@ -1,34 +1,35 @@
 package com.project.univukraine;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.project.univukraine.model.University;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Bundle;
-//import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.project.univukraine.service.DirectionsJSONParser;
 
@@ -47,11 +48,12 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private University university=null;
+    private University university = null;
     SupportMapFragment mapFragment;
-    LatLng origin = new LatLng(49.22567284740066, 28.425646982969074);
+    LatLng origin ;//= new LatLng(49.22567284740066, 28.425646982969074);
     LatLng dest; //= new LatLng(30.705493, 76.801256);
     ProgressDialog progressDialog;
+    FusedLocationProviderClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +63,67 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Intent intent = getIntent();
-        university = (University)intent.getSerializableExtra("university");
-        dest  = new LatLng(Double.parseDouble(university.getLatitude()), Double.parseDouble(university.getLongitude()));
-        drawPolylines();
+        university = (University) intent.getSerializableExtra("university");
+        dest = new LatLng(Double.parseDouble(university.getLatitude()), Double.parseDouble(university.getLongitude()));
+        client = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            getCurrentLocation();
+        }
 
+    }
+
+    private void getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Task<Location> task = client.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location!=null){
+                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+
+                              mMap = googleMap;
+                              origin = new LatLng(location.getLatitude(), location.getLongitude());
+
+                                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                                googleMap.addMarker(new MarkerOptions()
+                                        .position(origin)
+                                        .title("LinkedIn")
+                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                                googleMap.addMarker(new MarkerOptions()
+                                        .position(dest));
+                                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 7));
+                               drawPolylines();
+
+                        }
+
+                    });
+                }
+                else {
+                    ActivityCompat.requestPermissions(MapsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == 44){
+            if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                getCurrentLocation();
+            }
+        }
     }
 
     private void drawPolylines() {
@@ -106,19 +165,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.addMarker(new MarkerOptions()
-                .position(origin)
-                .title("LinkedIn")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(dest));
-
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 7));
 
     }
+
+//    @Override
+//    public void onMapReady(GoogleMap googleMap) {
+//        mMap = googleMap;
+//        if(currLocation != null){
+//        origin = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
+//        }
+//        else {
+//           // origin = new LatLng(49.22567284740066, 28.425646982969074);
+//            Log.d("No curr location", "No Location");
+//        }
+//
+//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(origin)
+//                .title("LinkedIn")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+//
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(dest));
+//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 7));
+//    }
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
 

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null);
-        //onStartPref();
+        onStartPref();
         //onStartPref2();
         universityRepository =  new UniversityRepository(getBaseContext(),
                 getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null));
