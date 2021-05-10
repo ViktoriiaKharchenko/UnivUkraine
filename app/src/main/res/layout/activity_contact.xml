@@ -1,76 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactActivity">
+    tools:context=".MainActivity">
 
-    <ScrollView
+    <ListView
+        android:id="@+id/lstNames"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-115dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text='Контакти, у яких прізвище починається на "Т"'
-                android:onClick="contactFilter"/>
-
-            <TableLayout
-                android:id="@+id/tableLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="100">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="33"
-                        android:background="#9966FF"
-                        android:gravity="center"
-                        android:padding="7dip"
-                        android:text="Ім'я"
-                        android:textColor="#FBF4F4"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="33"
-                        android:background="#9966FF"
-                        android:gravity="center"
-                        android:padding="7dip"
-                        android:text="Номер\nтелефону"
-                        android:textColor="#FBF4F4"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="34"
-                        android:background="#9966FF"
-                        android:gravity="center"
-                        android:padding="7dip"
-                        android:text="Пошта"
-                        android:textColor="#FBF4F4"
-                        android:textSize="16sp" />
-
-                </TableRow>
-
-
-            </TableLayout>
-        </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent" />
+</RelativeLayout>

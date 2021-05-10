@@ -5,8 +5,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -50,37 +53,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private University university = null;
     SupportMapFragment mapFragment;
-    LatLng origin ;//= new LatLng(49.22567284740066, 28.425646982969074);
-    LatLng dest; //= new LatLng(30.705493, 76.801256);
+    LatLng origin ;
+    LatLng dest;
     ProgressDialog progressDialog;
     FusedLocationProviderClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Context context = getApplicationContext();
         setContentView(R.layout.activity_maps);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         Intent intent = getIntent();
         university = (University) intent.getSerializableExtra("university");
-        dest = new LatLng(Double.parseDouble(university.getLatitude()), Double.parseDouble(university.getLongitude()));
+        dest = getLocationFromAddress(context,university.getAddress());
         client = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             getCurrentLocation();
         }
 
     }
+    public LatLng getLocationFromAddress(Context context, String strAddress) {
 
+        Geocoder coder = new Geocoder(context);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 1);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
     private void getCurrentLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         Task<Location> task = client.getLastLocation();
@@ -168,27 +191,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        mMap = googleMap;
-//        if(currLocation != null){
-//        origin = new LatLng(currLocation.getLatitude(), currLocation.getLongitude());
-//        }
-//        else {
-//           // origin = new LatLng(49.22567284740066, 28.425646982969074);
-//            Log.d("No curr location", "No Location");
-//        }
-//
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        googleMap.addMarker(new MarkerOptions()
-//                .position(origin)
-//                .title("LinkedIn")
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-//
-//        googleMap.addMarker(new MarkerOptions()
-//                .position(dest));
-//        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(origin, 7));
-//    }
 
     private class DownloadTask extends AsyncTask<String, Void, String> {
 
