@@ -77,7 +77,13 @@ public class UnivTableActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem save = menu.findItem(R.id.action_add);
+        save.setVisible(true);
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // получим идентификатор выбранного пункта меню
@@ -95,6 +101,14 @@ public class UnivTableActivity extends AppCompatActivity {
                 return true;
             case R.id.action_contact:
                 intent = new Intent(UnivTableActivity.this, ContactActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_about:
+                intent = new Intent(UnivTableActivity.this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_add:
+                intent = new Intent(UnivTableActivity.this, AddUnivActivity.class);
                 startActivity(intent);
                 return true;
             default:

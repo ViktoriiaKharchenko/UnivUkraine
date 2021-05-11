@@ -97,6 +97,10 @@ public class UnivTableExcellenceActivity extends AppCompatActivity {
                 intent = new Intent(UnivTableExcellenceActivity.this, ContactActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.action_about:
+                intent = new Intent(UnivTableExcellenceActivity.this, AboutActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

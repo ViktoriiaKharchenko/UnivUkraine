@@ -3,25 +3,31 @@ package com.project.univukraine;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ContactActivity extends Activity {
+public class ContactActivity extends AppCompatActivity {
 
     // The ListView
     private ListView lstNames;
@@ -41,7 +47,39 @@ public class ContactActivity extends Activity {
         // Read and show the contacts
         showContacts();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // получим идентификатор выбранного пункта меню
+        int id = item.getItemId();
+        Intent intent ;
+        // Операции для выбранного пункта меню
+        switch (id) {
+            case R.id.action_univ:
+                intent = new Intent(ContactActivity.this, UnivTableActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_main:
+                intent = new Intent(ContactActivity.this, MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_contact:
+                intent = new Intent(ContactActivity.this, ContactActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_about:
+                intent = new Intent(ContactActivity.this, AboutActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     /**
      * Show the contacts in the ListView.
      */
@@ -56,7 +94,18 @@ public class ContactActivity extends Activity {
             List<String> contacts = getContactNames().entrySet().stream()
                     .map(entry -> entry.getKey()+"\n"+entry.getValue())
                     .collect(Collectors.toList());
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts){
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent){
+
+                    View view = super.getView(position, convertView, parent);
+
+                    TextView textview = (TextView) view.findViewById(android.R.id.text1);
+                    textview.setTextSize(18);
+
+                    return view;
+                }
+            };
             lstNames.setAdapter(adapter);
         }
     }

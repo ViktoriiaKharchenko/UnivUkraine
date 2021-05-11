@@ -61,7 +61,7 @@ public class UniversityRepository extends SQLiteOpenHelper {
     //---insert a contact into the database---
     public long insertUniversity(University university) {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_ID, university.getId());
+        //initialValues.put(KEY_ID, university.getId());
         initialValues.put(KEY_ADDRESS, university.getAddress());
         initialValues.put(KEY_NAME, university.getName());
         initialValues.put(KEY_STUDENT_AMOUNT, university.getStudentAmount());

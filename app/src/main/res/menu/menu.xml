@@ -18,5 +18,16 @@
         android:id="@+id/action_contact"
         android:orderInCategory="100"
         android:title="@string/action_contact" />
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="Про автора" />
+    <item
+        android:id="@+id/action_add"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="Add"
+        android:visible="false"
+        app:showAsAction="always" />
 
 </menu>

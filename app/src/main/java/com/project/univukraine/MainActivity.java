@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         db = getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null);
         onStartPref();
-        //onStartPref2();
         universityRepository =  new UniversityRepository(getBaseContext(),
                 getBaseContext().openOrCreateDatabase("app.db", MODE_PRIVATE, null));
         contactRepository = new ContactRepository(getBaseContext(),
@@ -55,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, ContactActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.action_about:
+                intent = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -73,20 +76,7 @@ public class MainActivity extends AppCompatActivity {
         db.execSQL("INSERT INTO university VALUES (6, 'Національний університет біоресурсів і природокористування України', 'Київ', 26000, 2614, 3281, '50.38344273447251', '30.495999238617475');");
         db.close();
     }
-    private void onStartPref2 (){
-        db.execSQL("DROP TABLE IF EXISTS contacts");
-        db.execSQL("DROP TABLE IF EXISTS contacts");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS contacts (id INTEGER, name TEXT, surname TEXT, phoneNum TEXT, email TEXT)");
-        db.execSQL("INSERT INTO contacts VALUES (0, 'Іван', 'Іванов', '0678339912', 'ivanov@gmail.com');");
-        db.execSQL("INSERT INTO contacts VALUES (1, 'Лілія', 'Іванова', '0678562912', 'ivanovaL@gmail.com');");
-        db.execSQL("INSERT INTO contacts VALUES (2, 'Катерина', 'Оліщук', '0671452376', 'Kolischuk@ukr.net');");
-        db.execSQL("INSERT INTO contacts VALUES (3, 'Олександр', 'Терещенко', '0961010989', 'tereshSasha@gmail.com');");
-        db.execSQL("INSERT INTO contacts VALUES (4, 'Кирил', 'Корніленко', '0632880090', 'kornilenko@ukr.net');");
-        db.execSQL("INSERT INTO contacts VALUES (5, 'Анастасія', 'Токар', '0950302121', 'TokNastia@gmail.com');");
-        db.execSQL("INSERT INTO contacts VALUES (6, 'Ірина', 'Тітаренко', '0932011987', 'TitarenkoI@gmail.com');");
-        db.close();
-    }
     public void onClick(View view){
         Intent intent = new Intent(MainActivity.this, UnivTableActivity.class);
         startActivity(intent);
